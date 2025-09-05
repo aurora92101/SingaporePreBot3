@@ -51,7 +51,7 @@ namespace SingaporePreBot3
         public static double GetFloor(double odds, double count)
         {
             double multiple = 1;
-            if (count != null)
+            if (count != 0)
                 multiple = Math.Pow(10, count);
             return odds >= 0 ? Math.Floor(odds * multiple + 0.0001) / multiple : -(Math.Floor(Math.Abs(odds) * multiple + 0.0001) / multiple);
         }

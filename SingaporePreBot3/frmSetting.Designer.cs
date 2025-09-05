@@ -61,9 +61,17 @@ namespace SingaporePreBot3
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.txtStake = new System.Windows.Forms.TextBox();
             this.chkPlaySound = new System.Windows.Forms.CheckBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.numStartTime = new System.Windows.Forms.NumericUpDown();
+            this.label17 = new System.Windows.Forms.Label();
+            this.label18 = new System.Windows.Forms.Label();
+            this.numEndTime = new System.Windows.Forms.NumericUpDown();
+            this.label19 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.numDafabet)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCandidate)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPinnacle)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStartTime)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numEndTime)).BeginInit();
             this.SuspendLayout();
             // 
             // txtUsernameDafabet
@@ -107,7 +115,7 @@ namespace SingaporePreBot3
             this.label3.AutoSize = true;
             this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
             this.label3.ForeColor = System.Drawing.Color.White;
-            this.label3.Location = new System.Drawing.Point(777, 181);
+            this.label3.Location = new System.Drawing.Point(758, 177);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(22, 18);
             this.label3.TabIndex = 13;
@@ -149,7 +157,7 @@ namespace SingaporePreBot3
             // 
             // numCandidate
             // 
-            this.numCandidate.Location = new System.Drawing.Point(733, 179);
+            this.numCandidate.Location = new System.Drawing.Point(714, 175);
             this.numCandidate.Maximum = new decimal(new int[] {
             10,
             0,
@@ -175,7 +183,7 @@ namespace SingaporePreBot3
             this.label2.AutoSize = true;
             this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
             this.label2.ForeColor = System.Drawing.Color.White;
-            this.label2.Location = new System.Drawing.Point(476, 181);
+            this.label2.Location = new System.Drawing.Point(426, 181);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(22, 18);
             this.label2.TabIndex = 7;
@@ -186,7 +194,7 @@ namespace SingaporePreBot3
             this.label5.AutoSize = true;
             this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label5.ForeColor = System.Drawing.Color.White;
-            this.label5.Location = new System.Drawing.Point(602, 181);
+            this.label5.Location = new System.Drawing.Point(583, 177);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(125, 18);
             this.label5.TabIndex = 12;
@@ -197,7 +205,7 @@ namespace SingaporePreBot3
             this.label14.AutoSize = true;
             this.label14.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label14.ForeColor = System.Drawing.Color.White;
-            this.label14.Location = new System.Drawing.Point(337, 181);
+            this.label14.Location = new System.Drawing.Point(287, 181);
             this.label14.Name = "label14";
             this.label14.Size = new System.Drawing.Size(80, 18);
             this.label14.TabIndex = 0;
@@ -205,7 +213,7 @@ namespace SingaporePreBot3
             // 
             // numPinnacle
             // 
-            this.numPinnacle.Location = new System.Drawing.Point(432, 179);
+            this.numPinnacle.Location = new System.Drawing.Point(382, 179);
             this.numPinnacle.Maximum = new decimal(new int[] {
             10,
             0,
@@ -413,7 +421,7 @@ namespace SingaporePreBot3
             this.txtStake.Multiline = true;
             this.txtStake.Name = "txtStake";
             this.txtStake.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtStake.Size = new System.Drawing.Size(627, 277);
+            this.txtStake.Size = new System.Drawing.Size(889, 277);
             this.txtStake.TabIndex = 1005;
             // 
             // chkPlaySound
@@ -427,6 +435,96 @@ namespace SingaporePreBot3
             this.chkPlaySound.TabIndex = 1006;
             this.chkPlaySound.Text = "Play Sound";
             this.chkPlaySound.UseVisualStyleBackColor = true;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label15.ForeColor = System.Drawing.Color.White;
+            this.label15.Location = new System.Drawing.Point(583, 235);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(86, 18);
+            this.label15.TabIndex = 12;
+            this.label15.Text = "Start Time";
+            // 
+            // numStartTime
+            // 
+            this.numStartTime.Location = new System.Drawing.Point(714, 233);
+            this.numStartTime.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numStartTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numStartTime.Name = "numStartTime";
+            this.numStartTime.Size = new System.Drawing.Size(43, 20);
+            this.numStartTime.TabIndex = 11;
+            this.numStartTime.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numStartTime.ValueChanged += new System.EventHandler(this.numCandidate_ValueChanged);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
+            this.label17.ForeColor = System.Drawing.Color.White;
+            this.label17.Location = new System.Drawing.Point(758, 235);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(22, 18);
+            this.label17.TabIndex = 13;
+            this.label17.Text = "m";
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label18.ForeColor = System.Drawing.Color.White;
+            this.label18.Location = new System.Drawing.Point(915, 235);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(79, 18);
+            this.label18.TabIndex = 12;
+            this.label18.Text = "End Time";
+            // 
+            // numEndTime
+            // 
+            this.numEndTime.Location = new System.Drawing.Point(1021, 235);
+            this.numEndTime.Maximum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numEndTime.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numEndTime.Name = "numEndTime";
+            this.numEndTime.Size = new System.Drawing.Size(43, 20);
+            this.numEndTime.TabIndex = 11;
+            this.numEndTime.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.numEndTime.ValueChanged += new System.EventHandler(this.numCandidate_ValueChanged);
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("Microsoft Sans Serif", 11F, System.Drawing.FontStyle.Bold);
+            this.label19.ForeColor = System.Drawing.Color.White;
+            this.label19.Location = new System.Drawing.Point(1065, 237);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(22, 18);
+            this.label19.TabIndex = 13;
+            this.label19.Text = "m";
             // 
             // frmSetting
             // 
@@ -442,14 +540,20 @@ namespace SingaporePreBot3
             this.Controls.Add(this.txtPercentMin);
             this.Controls.Add(this.txtPasswordPinnacle);
             this.Controls.Add(this.label6);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtPasswordDafabet);
             this.Controls.Add(this.numDafabet);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.label12);
+            this.Controls.Add(this.numEndTime);
+            this.Controls.Add(this.numStartTime);
             this.Controls.Add(this.numCandidate);
             this.Controls.Add(this.btnSave);
+            this.Controls.Add(this.label18);
             this.Controls.Add(this.label2);
+            this.Controls.Add(this.label15);
             this.Controls.Add(this.txtDomainPinnacle);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label14);
@@ -475,6 +579,8 @@ namespace SingaporePreBot3
             ((System.ComponentModel.ISupportInitialize)(this.numDafabet)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCandidate)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numPinnacle)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStartTime)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numEndTime)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -512,5 +618,11 @@ namespace SingaporePreBot3
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.TextBox txtStake;
         private System.Windows.Forms.CheckBox chkPlaySound;
+        private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.NumericUpDown numStartTime;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.NumericUpDown numEndTime;
+        private System.Windows.Forms.Label label19;
     }
 }

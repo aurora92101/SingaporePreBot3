@@ -188,34 +188,34 @@ namespace SingaporePreBot3
                             matchItem.markets.Add(new Market(1, 0, matchItem.matchId, fullTimeId, ouLine, overOdd, underOdd, "", "", ""));
                     }
                 }
-                if (halfTimeId != "0")
-                {
-                    string hdInitLine = game[16]?.ToString() == "-1" ? "" : game[16]?.ToString() ?? "";
+                //if (halfTimeId != "0")
+                //{
+                //    string hdInitLine = game[16]?.ToString() == "-1" ? "" : game[16]?.ToString() ?? "";
 
-                    bool hdFlag = game[12] == "1" ? true : false;
-                    if (!string.IsNullOrEmpty(hdInitLine))
-                    {
-                        string strLine = hdFlag == false ? $"{hdInitLine}" : $"-{hdInitLine}";
-                        double ahHomeOdd = Utils.ParseToDouble(game[90]?.ToString() ?? "") / 10;
-                        double ahAwayOdd = Utils.ParseToDouble(game[91]?.ToString() ?? "") / 10;
+                //    bool hdFlag = game[12] == "1" ? true : false;
+                //    if (!string.IsNullOrEmpty(hdInitLine))
+                //    {
+                //        string strLine = hdFlag == false ? $"{hdInitLine}" : $"-{hdInitLine}";
+                //        double ahHomeOdd = Utils.ParseToDouble(game[90]?.ToString() ?? "") / 10;
+                //        double ahAwayOdd = Utils.ParseToDouble(game[91]?.ToString() ?? "") / 10;
 
-                        double overOdd = Utils.ParseToDouble(game[94]?.ToString() ?? "") / 10;
-                        double underOdd = Utils.ParseToDouble(game[95]?.ToString() ?? "") / 10;
-                        string ouLine = game[22]?.ToString() == "-1" ? "" : game[22]?.ToString() ?? "";
+                //        double overOdd = Utils.ParseToDouble(game[94]?.ToString() ?? "") / 10;
+                //        double underOdd = Utils.ParseToDouble(game[95]?.ToString() ?? "") / 10;
+                //        string ouLine = game[22]?.ToString() == "-1" ? "" : game[22]?.ToString() ?? "";
 
-                        double homeOdd = Utils.ParseToDouble(game[70]?.ToString() ?? "") / 10;
-                        double awayOdd = Utils.ParseToDouble(game[72]?.ToString() ?? "") / 10;
-                        double drawOdd = Utils.ParseToDouble(game[71]?.ToString() ?? "") / 10;
+                //        double homeOdd = Utils.ParseToDouble(game[70]?.ToString() ?? "") / 10;
+                //        double awayOdd = Utils.ParseToDouble(game[72]?.ToString() ?? "") / 10;
+                //        double drawOdd = Utils.ParseToDouble(game[71]?.ToString() ?? "") / 10;
 
-                        //AH Add
-                        if (!((ahHomeOdd == 1) && (ahHomeOdd == 1)))
-                            matchItem.markets.Add(new Market(0, 1, matchItem.matchId, halfTimeId, strLine, ahHomeOdd, ahAwayOdd, "", "", ""));
+                //        //AH Add
+                //        if (!((ahHomeOdd == 1) && (ahHomeOdd == 1)))
+                //            matchItem.markets.Add(new Market(0, 1, matchItem.matchId, halfTimeId, strLine, ahHomeOdd, ahAwayOdd, "", "", ""));
 
-                        //OU Add
-                        if (!((overOdd == 1) && (underOdd == 1)))
-                            matchItem.markets.Add(new Market(1, 1, matchItem.matchId, halfTimeId, ouLine, overOdd, underOdd, "", "", ""));
-                    }
-                }
+                //        //OU Add
+                //        if (!((overOdd == 1) && (underOdd == 1)))
+                //            matchItem.markets.Add(new Market(1, 1, matchItem.matchId, halfTimeId, ouLine, overOdd, underOdd, "", "", ""));
+                //    }
+                //}
             }
             catch (Exception e)
             {

@@ -33,7 +33,6 @@ namespace SingaporePreBot3
 
 		public void startAutomation()
 		{
-
             if (workThread != null && workThread.IsAlive)
 				return;
 			_bAutomation = true;

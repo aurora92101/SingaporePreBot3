@@ -103,28 +103,28 @@ namespace SingaporePreBot3
                 {
                     Url = $"https://online.singaporepools.com/en/sports/category/1/football"
                 }).Result;
-                chromeSession.Subscribe<ResponseReceivedEvent>(e =>
-                {
-                    Task.Run(async () =>
-                    {
-                        //try
-                        //{
-                        //    if (e.Response.Status != 200)
-                        //        return;
-                        //    var url = e.Response.Url;
-                        //    if (url.Contains("categoryName=football&mode=web"))
-                        //    {
-                        //        //var result = (await chromeSession.SendAsync(new GetResponseBodyCommand() { RequestId = e.RequestId })).Result;
-                        //        //string RespBody = result.Body;
-                        //        //Trace.WriteLine($"{url} - {RespBody}");
-                        //    }
-                        //}
-                        //catch (Exception ex)
-                        //{
-                        //    Trace.WriteLine($"{MethodBase.GetCurrentMethod().Name} error - {ex.Message}");
-                        //}
-                    });
-                });
+                //chromeSession.Subscribe<ResponseReceivedEvent>(e =>
+                //{
+                //    Task.Run(async () =>
+                //    {
+                //        //try
+                //        //{
+                //        //    if (e.Response.Status != 200)
+                //        //        return;
+                //        //    var url = e.Response.Url;
+                //        //    if (url.Contains("categoryName=football&mode=web"))
+                //        //    {
+                //        //        //var result = (await chromeSession.SendAsync(new GetResponseBodyCommand() { RequestId = e.RequestId })).Result;
+                //        //        //string RespBody = result.Body;
+                //        //        //Trace.WriteLine($"{url} - {RespBody}");
+                //        //    }
+                //        //}
+                //        //catch (Exception ex)
+                //        //{
+                //        //    Trace.WriteLine($"{MethodBase.GetCurrentMethod().Name} error - {ex.Message}");
+                //        //}
+                //    });
+                //});
 
                 //chromeSession.Subscribe<WebSocketFrameReceivedEvent>(e =>
                 //{
@@ -155,17 +155,16 @@ namespace SingaporePreBot3
                                 if (header.ContainsKey("x-session-id"))
                                     Setting.Instance.spCtrl.sessionId = header["x-session-id"];
                                 Setting.Instance.spCtrl.initHttpClient();
-                                //var result = (await chromeSession.SendAsync(new GetResponseBodyCommand() { RequestId = e.RequestId })).Result;
-                                //string RespBody = result.Body;
-                                //Trace.WriteLine($"{url} - {RespBody}");
                             }
                         }
                         catch (Exception ex)
                         {
                             Trace.WriteLine($"{MethodBase.GetCurrentMethod().Name} error - {ex.Message}");
                         }
+                        await Task.CompletedTask; // Added to ensure the method is properly awaited
                     });
                 });
+
                 chromeSession.Subscribe<LoadEventFiredEvent>(loadEventFired =>
                 {
                     // we cannot block in event handler, hence the task

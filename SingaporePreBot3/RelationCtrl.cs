@@ -441,7 +441,7 @@ namespace SingaporePreBot3
                 return false;
             return true;
         }
-        public async void checkCandidate(string site, Market item)
+        public void checkCandidate(string site, Market item)
         {
             try
             {

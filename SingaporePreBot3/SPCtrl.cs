@@ -158,9 +158,9 @@ namespace SingaporePreBot3
                             MatchItem newMatch = getMatch(eventOne);
                             if (newMatch != null)
                             {
-                            newMatch.markets = getMarket(newMatch.matchId, eventOne["markets"]);
-                            ret.Add(newMatch);
-                        }
+                                newMatch.markets = getMarket(newMatch.matchId, eventOne["markets"]);
+                                ret.Add(newMatch);
+                            }
                                 
                         }
                         catch (Exception ex)
@@ -183,13 +183,14 @@ namespace SingaporePreBot3
             {
                 newMatch = new MatchItem();
                 DateTime dateTime = Utils.ParseToDateTime(eventOne["startTime"]?.ToString());
-                newMatch.startTime = dateTime.AddHours(8);
-                if ((newMatch.startTime.Day != DateTime.Now.Day) && (newMatch.startTime.Day != DateTime.Now.AddDays(1).Day))
-                {
-                    newMatch = null;
-                    return newMatch;
-                }
-                else
+                newMatch.startTime = dateTime;
+                //newMatch.startTime = dateTime.AddHours(8);
+                //if ((newMatch.startTime.Day != DateTime.Now.Day) && (newMatch.startTime.Day != DateTime.Now.AddDays(1).Day))
+                //{
+                //newMatch = null;
+                //return newMatch;
+                //}
+                //else
                 {
                     newMatch.leagueId = eventOne["type"]["id"]?.ToString();
                     string strLeague = eventOne["type"]["name"]?.ToString();
@@ -246,6 +247,10 @@ namespace SingaporePreBot3
                     string marketStatusCode = marketOne["marketStatusCode"]?.ToString();
                     if (!isValidMarket(name, marketStatusCode))
                         continue;
+
+                    if (name.Contains("Halftime") || name.Contains("Half Time"))
+                        continue;
+                        //newItem.period = 1;
                     Market newItem = new Market();
                     newItem.matchId = matchId;
                     newItem.marketId = marketOne["id"]?.ToString();
@@ -253,8 +258,6 @@ namespace SingaporePreBot3
                         newItem.nType = 0;
                     else if (name.Contains("Over/Under"))
                         newItem.nType = 1;
-                    if (name.Contains("Halftime") || name.Contains("Half Time"))
-                        newItem.period = 1;
                     //newItem.matchId = marketOne["eventId"]?.ToString();
                     string strLine = "";
                     if (newItem.nType == 0)
@@ -317,7 +320,16 @@ namespace SingaporePreBot3
         }
         public bool login()     //Return login status
         {
+            // Simulate a login process and set the loginStatus field
+            loginStatus = PerformLogin() ? 1 : 0;
             return loginStatus == 1;
+        }
+
+        // Add a helper method to simulate the login process
+        private bool PerformLogin()
+        {
+            // Replace this with actual login logic
+            return true; // Assume login is successful for now
         }
         public void getLiveEvents()
         {
@@ -364,13 +376,27 @@ namespace SingaporePreBot3
                 httpClient.DefaultRequestHeaders.Add("Authorization", authToken);
                 httpClient.DefaultRequestHeaders.Remove("x-wl-analytics-tracking-id");
                 httpClient.DefaultRequestHeaders.Add("x-wl-analytics-tracking-id", Guid.NewGuid().ToString());
+                
                 HttpResponseMessage respOverUnder = httpClient.GetAsync($"https://{Setting.Instance.domainSingapore}/mfp/api/adapters/spplMfpApi/event/upcoming/football?lang=en&betType=HL").Result;       //  Over / Under
                 string ouContent = respOverUnder.Content.ReadAsStringAsync().Result;
                 List<MatchItem> matches1 = parseEventContent(ouContent);
+
                 HttpResponseMessage respAH = httpClient.GetAsync($"https://{Setting.Instance.domainSingapore}/mfp/api/adapters/spplMfpApi/event/upcoming/football?lang=en&betType=AH").Result;       //  Asian Handicap
                 string ahContent = respAH.Content.ReadAsStringAsync().Result;
                 List<MatchItem> matches2 = parseEventContent(ahContent);
                 foreach (MatchItem one in matches2)
+                {
+                    MatchItem curMatch = matches1.Find(o => o.matchId == one.matchId);
+                    if (curMatch == null)
+                        matches1.Add(one);
+                    else
+                        curMatch.markets.AddRange(one.markets);
+                }
+
+                HttpResponseMessage respMR = httpClient.GetAsync($"https://{Setting.Instance.domainSingapore}/mfp/api/adapters/spplMfpApi/event/upcoming/football?lang=en&betType=MR").Result;       //  1X2
+                string mrContent = respMR.Content.ReadAsStringAsync().Result;
+                List<MatchItem> matchesMR = parseEventContent(mrContent);
+                foreach (MatchItem one in matchesMR)
                 {
                     MatchItem curMatch = matches1.Find(o => o.matchId == one.matchId);
                     if (curMatch == null)
