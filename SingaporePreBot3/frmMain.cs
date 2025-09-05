@@ -105,7 +105,7 @@ namespace SingaporePreBot3
         }
         private void frmMain_Load(object sender, EventArgs e)
         {
-            lblTitle.Text = $"Singaporepool Prematch Bot - {Assembly.GetEntryAssembly().GetName().Version}";
+            lblTitle.Text = $"SingaporePreBot 3 Prematch Bot - {Assembly.GetEntryAssembly().GetName().Version}";
             this.Text = lblTitle.Text;
             lblUsername.Text = Setting.Instance.appuser;
             if (!Directory.Exists(Global.LogDir))
