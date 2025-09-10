@@ -23,6 +23,7 @@ namespace SingaporePreBot3
     public class MatchItem
     {
         public string id;
+        public bool isOne;              // true - 1X2 add, false - only AH markets
         public string leagueId;
         public string matchId;
         public DateTime startTime;

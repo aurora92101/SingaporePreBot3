@@ -139,12 +139,13 @@ namespace SingaporePreBot3
                 Trace.WriteLine("Try GetLiveEvents Invalid!");
             }
         }
-        public MatchItem GetMatchItem(dynamic game, string leagueId, string leagueName)
+        public MatchItem GetMatchItem(dynamic game, string leagueId, string leagueName, bool isOne)
         {
             MatchItem matchItem = null;
             try
             {
                 matchItem = new MatchItem();
+                matchItem.isOne = isOne;
                 matchItem.leagueId = leagueId;
                 matchItem.leagueName = leagueName;
                 //matchItem.matchId = game[86]?.ToString() == "0" ? game[64]?.ToString() : game[86]?.ToString();
@@ -175,13 +176,17 @@ namespace SingaporePreBot3
                         double underOdd = Utils.ParseToDouble(game[93]?.ToString() ?? "") / 10;
                         string ouLine = game[19]?.ToString() == "-1" ? "" : game[19]?.ToString() ?? "";
 
-                        double homeOdd = Utils.ParseToDouble(game[67]?.ToString() ?? "") / 10;
-                        double awayOdd = Utils.ParseToDouble(game[69]?.ToString() ?? "") / 10;
-                        double drawOdd = Utils.ParseToDouble(game[68]?.ToString() ?? "") / 10;
+                        double homeOdd = Utils.ParseToDouble(game[67]?.ToString() ?? "");
+                        double awayOdd = Utils.ParseToDouble(game[69]?.ToString() ?? "");
+                        double drawOdd = Utils.ParseToDouble(game[68]?.ToString() ?? "");
 
                         //AH Add
-                        if (!((ahHomeOdd == 1) && (ahHomeOdd == 1)))
+                        if ((ahHomeOdd != 1 || ahAwayOdd != 1))
                             matchItem.markets.Add(new Market(0, 0, matchItem.matchId, fullTimeId, strLine, ahHomeOdd, ahAwayOdd, "", "", ""));
+
+                        //AH Add
+                        if ((homeOdd != 1 || awayOdd != 1) && isOne)
+                            matchItem.markets.Add(new Market(2, 0, matchItem.matchId, fullTimeId, drawOdd.ToString(), homeOdd, awayOdd, "", "", ""));
 
                         //OU Add
                         //if (!((overOdd == 1) && (underOdd == 1)))
@@ -223,6 +228,21 @@ namespace SingaporePreBot3
             }
             return matchItem;
         }
+        public static bool isOneMarket(string matchId, dynamic league)
+        {
+            bool flag = true;
+            int cnt = 0;
+            foreach (JArray game in league)
+            {
+                if ((game[9]?.ToString() ?? string.Empty) + "&" + (game[10]?.ToString() ?? string.Empty) == matchId)
+                {
+                    cnt++;
+                }
+            }
+            if (cnt > 1) flag = false;
+            else flag = true;
+            return flag;
+        }
         public List<MatchItem> GetMatchItems(string matchContents)
         {
             List<MatchItem> matchItems = new List<MatchItem>();
@@ -261,7 +281,18 @@ namespace SingaporePreBot3
                         continue;
                     foreach (JArray eachGame in eachLeague[1])
                     {
-                        MatchItem newItem = GetMatchItem(eachGame, leagueId, leagueName);
+                        MatchItem newItem = null;
+                        if (isOneMarket((eachGame[9]?.ToString() ?? string.Empty) + "&" + (eachGame[10]?.ToString() ?? string.Empty), eachLeague[1]))
+                        {
+                            //Add under/over market
+                            newItem = GetMatchItem(eachGame, leagueId, leagueName, true);
+
+                        }
+                        else
+                        {
+                            newItem = GetMatchItem(eachGame, leagueId, leagueName, false);
+
+                        }
                         if (newItem != null)
                         {
                             MatchItem currentItem = newItem.matchId == "0" ? null : matchItems.Find(cur => cur.matchId == newItem.matchId);
@@ -315,28 +346,10 @@ namespace SingaporePreBot3
             cookieContainer = new CookieContainer();
             handler.CookieContainer = cookieContainer;
             httpClient = new HttpClient(handler);
-
-            // Set ExpectContinue to false via DefaultRequestHeaders
-            httpClient.DefaultRequestHeaders.ExpectContinue = false;
-
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Cache-Control", "no-cache");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "*/*");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", Setting.Instance.userAgent);
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Language", "en-US,en;q=0.9,ko;q=0.8");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Requested-With", "XMLHttpRequest");
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
-
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Referer", "https://m8huaythai.org/");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-MicrosoftAjax", "Delta=true");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Origin", "https://m8huaythai.org");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("sec-ch-ua", "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("sec-ch-ua-mobile", "?0");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("sec-ch-ua-platform", "\"Windows\"");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Dest", "empty");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Mode", "cors");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Site", "same-origin");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Connection", "keep-alive");
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "m8huaythai.org");
         }
 
         public void InitLoginFormDatas()

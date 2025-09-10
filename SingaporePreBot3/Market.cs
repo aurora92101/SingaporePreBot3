@@ -19,7 +19,7 @@ namespace SingaporePreBot3
 		{
 			get 
 			{
-                string strType = nType == 0 ? $"AH({strLine})" : $"OU({strLine})";
+                string strType = nType == 0 ? $"AH({strLine})" : (nType == 1 ? $"OU({strLine})" : $"1X2({strLine})");
 				return $"{(period == 0 ? "FT" : "HT")}-{strType}";
 			}
 		}
