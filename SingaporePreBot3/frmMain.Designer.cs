@@ -232,6 +232,7 @@ namespace SingaporePreBot3
             this.btnSingapore.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnSingapore.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnSingapore.UseVisualStyleBackColor = false;
+            this.btnSingapore.Visible = false;
             this.btnSingapore.Click += new System.EventHandler(this.button_Click);
             // 
             // btnWork

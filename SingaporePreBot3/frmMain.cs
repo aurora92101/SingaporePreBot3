@@ -242,7 +242,7 @@ namespace SingaporePreBot3
 
         private void stop()
         {
-            Setting.Instance.spCtrl.stop();
+            //Setting.Instance.spCtrl.stop();
             Setting.Instance.mbCtrl.stop();
             Setting.Instance.browser.stop();
             RelationCtrl.Instance.stop();

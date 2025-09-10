@@ -37,7 +37,7 @@ namespace SingaporePreBot3
 				return;
 			_bAutomation = true;
 			Global.WriteStatus("Auto betting started");
-			Setting.Instance.spCtrl.start();
+			//Setting.Instance.spCtrl.start();
 			Setting.Instance.mbCtrl.start();
 			RelationCtrl.Instance.start();
 			workThread = new Thread(() => lookupMatch());
@@ -55,7 +55,7 @@ namespace SingaporePreBot3
 			try
 			{
 				stopAutomationInternal();
-				Setting.Instance.spCtrl.stop();
+				//Setting.Instance.spCtrl.stop();
 				Setting.Instance.mbCtrl.stop();
 				if (workThread != null && workThread.IsAlive)
 					workThread.Abort();

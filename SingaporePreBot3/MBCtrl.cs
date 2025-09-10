@@ -184,8 +184,8 @@ namespace SingaporePreBot3
                             matchItem.markets.Add(new Market(0, 0, matchItem.matchId, fullTimeId, strLine, ahHomeOdd, ahAwayOdd, "", "", ""));
 
                         //OU Add
-                        if (!((overOdd == 1) && (underOdd == 1)))
-                            matchItem.markets.Add(new Market(1, 0, matchItem.matchId, fullTimeId, ouLine, overOdd, underOdd, "", "", ""));
+                        //if (!((overOdd == 1) && (underOdd == 1)))
+                        //    matchItem.markets.Add(new Market(1, 0, matchItem.matchId, fullTimeId, ouLine, overOdd, underOdd, "", "", ""));
                     }
                 }
                 //if (halfTimeId != "0")
@@ -315,10 +315,28 @@ namespace SingaporePreBot3
             cookieContainer = new CookieContainer();
             handler.CookieContainer = cookieContainer;
             httpClient = new HttpClient(handler);
-            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7");
+
+            // Set ExpectContinue to false via DefaultRequestHeaders
+            httpClient.DefaultRequestHeaders.ExpectContinue = false;
+
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Cache-Control", "no-cache");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept", "*/*");
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", Setting.Instance.userAgent);
             httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Accept-Language", "en-US,en;q=0.9,ko;q=0.8");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-Requested-With", "XMLHttpRequest");
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Ssl3 | SecurityProtocolType.Tls12 | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls;
+
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Referer", "https://m8huaythai.org/");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("X-MicrosoftAjax", "Delta=true");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Origin", "https://m8huaythai.org");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("sec-ch-ua", "\"Not;A=Brand\";v=\"99\", \"Google Chrome\";v=\"139\", \"Chromium\";v=\"139\"");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("sec-ch-ua-mobile", "?0");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("sec-ch-ua-platform", "\"Windows\"");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Dest", "empty");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Mode", "cors");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Sec-Fetch-Site", "same-origin");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Connection", "keep-alive");
+            httpClient.DefaultRequestHeaders.TryAddWithoutValidation("Host", "m8huaythai.org");
         }
 
         public void InitLoginFormDatas()
@@ -495,6 +513,7 @@ namespace SingaporePreBot3
                     new KeyValuePair<string, string>("__EVENTARGUMENT", ""),
                     new KeyValuePair<string, string>("__VIEWSTATE", strViewState),
                     new KeyValuePair<string, string>("__VIEWSTATEGENERATOR", strViewStateGenerator),
+                    new KeyValuePair<string, string>("__VIEWSTATEENCRYPTED", ""),
                     new KeyValuePair<string, string>("__EVENTVALIDATION", strViewEnentValidation),
                     new KeyValuePair<string, string>("txtUserName", Setting.Instance.usernameSuperodd),
                     new KeyValuePair<string, string>("txtPassword", Setting.Instance.passwordSuperodd),

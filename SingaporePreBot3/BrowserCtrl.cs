@@ -100,9 +100,10 @@ namespace SingaporePreBot3
                 var pageEnableResult = chromeSession.SendAsync<MasterDevs.ChromeDevTools.Protocol.Chrome.Page.EnableCommand>().Result;
                 var runTimeEnableResult = chromeSession.SendAsync<MasterDevs.ChromeDevTools.Protocol.Chrome.Runtime.EnableCommand>().Result;
                 var navigateResponse = chromeSession.SendAsync(new NavigateCommand
-                {
-                    Url = $"https://online.singaporepools.com/en/sports/category/1/football"
-                }).Result;
+                    {
+                        Url = $"https://online.singaporepools.com/en/sports/category/1/football"
+                    }
+                ).Result;
                 //chromeSession.Subscribe<ResponseReceivedEvent>(e =>
                 //{
                 //    Task.Run(async () =>
