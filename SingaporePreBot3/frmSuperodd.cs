@@ -29,7 +29,9 @@ namespace SingaporePreBot3
                         one.leagueName,
                         one.strMatchName,
                         one.strTime,
-                        one.strMarket
+                        one.strMarket,
+                        one.strOldMarket,
+                        one.strNewMarket
                     });
                     dgvMatch.Rows[nRowIndex].Tag = one;
                 }

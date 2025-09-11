@@ -58,6 +58,22 @@ namespace SingaporePreBot3
             return markets.Count > 0 ? $"{string.Join(", ", markets.Select(o => $"{o.strMarketName}({o.dOdd1}/{o.dOdd2})"))}" : "";
         }}
         [JsonIgnore]
+        public string strOldMarket
+        {
+            get
+            {
+                return oldMarkets.Count > 0 ? $"{string.Join(", ", oldMarkets.Select(o => $"{o.strMarketName}({o.dOdd1}/{o.dOdd2})"))}" : "";
+            }
+        }
+        [JsonIgnore]
+        public string strNewMarket
+        {
+            get
+            {
+                return newMarkets.Count > 0 ? $"{string.Join(", ", newMarkets.Select(o => $"{o.strMarketName}({o.dOdd1}/{o.dOdd2})"))}" : "";
+            }
+        }
+        [JsonIgnore]
         public string strMatchName { get { return $"{home} vs {away}"; } }
         public MatchItem(MatchItem old)
         {

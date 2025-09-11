@@ -81,7 +81,62 @@ namespace SingaporePreBot3
             {
                 curMutex.ReleaseMutex();
             }
-            
+        }
+
+        public void UpdateMatches(string site, List<MatchItem> newMatches)
+        {
+            if (!_sites.Contains(site))
+                return;
+
+            Mutex curMutex = mutexDic[site];
+            try
+            {
+                curMutex.WaitOne();
+
+                if (dataDic.ContainsKey(site))
+                {
+                    // 기존 리스트 업데이트
+                    var oldMatches = dataDic[site];
+
+                    // matchId 기준으로 병합 (중복 처리)
+                    foreach (var newItem in newMatches)
+                    {
+                        var existing = oldMatches.FirstOrDefault(m => m.matchId == newItem.matchId);
+                        if (existing != null)
+                        {
+                            // 속성 갱신
+                            existing.startTime = newItem.startTime;
+                            existing.home = newItem.home;
+                            existing.away = newItem.away;
+                            existing.homeScore = newItem.homeScore;
+                            existing.awayScore = newItem.awayScore;
+                            existing.minute = newItem.minute;
+                            existing.second = newItem.second;
+                            existing.isRest = newItem.isRest;
+                            existing.period = newItem.period;
+                            existing.updateTime = DateTime.UtcNow;
+                            existing.markets = newItem.markets;
+                        }
+                        else
+                        {
+                            oldMatches.Add(newItem);
+                        }
+                    }
+                    oldMatches.RemoveAll(o => !newMatches.Any(n => n.matchId == o.matchId));
+                }
+                else
+                {
+                    dataDic[site] = newMatches;
+                }
+            }
+            catch (Exception ex)
+            {
+                Trace.WriteLine($"{MethodBase.GetCurrentMethod().Name} error - {ex.Message}");
+            }
+            finally
+            {
+                curMutex.ReleaseMutex();
+            }
         }
         public void updateSabaTime(string code)
         {

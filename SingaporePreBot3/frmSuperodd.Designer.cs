@@ -37,6 +37,8 @@ namespace SingaporePreBot3
             this.Column3 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.Column5 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column4 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Column6 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dgvMatch)).BeginInit();
             this.SuspendLayout();
             // 
@@ -61,7 +63,9 @@ namespace SingaporePreBot3
             this.Column2,
             this.Column3,
             this.Column1,
-            this.Column5});
+            this.Column5,
+            this.Column4,
+            this.Column6});
             this.dgvMatch.Location = new System.Drawing.Point(10, 41);
             this.dgvMatch.Name = "dgvMatch";
             this.dgvMatch.ReadOnly = true;
@@ -99,7 +103,6 @@ namespace SingaporePreBot3
             this.Column2.HeaderText = "League";
             this.Column2.Name = "Column2";
             this.Column2.ReadOnly = true;
-            this.Column2.Width = 130;
             // 
             // Column3
             // 
@@ -108,7 +111,7 @@ namespace SingaporePreBot3
             this.Column3.MinimumWidth = 150;
             this.Column3.Name = "Column3";
             this.Column3.ReadOnly = true;
-            this.Column3.Width = 220;
+            this.Column3.Width = 180;
             // 
             // Column1
             // 
@@ -116,15 +119,29 @@ namespace SingaporePreBot3
             this.Column1.HeaderText = "Start Time";
             this.Column1.Name = "Column1";
             this.Column1.ReadOnly = true;
-            this.Column1.Width = 120;
+            this.Column1.Width = 110;
             // 
             // Column5
             // 
-            this.Column5.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.Column5.FillWeight = 70F;
             this.Column5.HeaderText = "Odds";
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
+            this.Column5.Width = 250;
+            // 
+            // Column4
+            // 
+            this.Column4.HeaderText = "OldOdd";
+            this.Column4.Name = "Column4";
+            this.Column4.ReadOnly = true;
+            this.Column4.Width = 250;
+            // 
+            // Column6
+            // 
+            this.Column6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.Column6.HeaderText = "NewOdd";
+            this.Column6.Name = "Column6";
+            this.Column6.ReadOnly = true;
             // 
             // frmSuperodd
             // 
@@ -153,5 +170,7 @@ namespace SingaporePreBot3
         private System.Windows.Forms.DataGridViewTextBoxColumn Column3;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column1;
         private System.Windows.Forms.DataGridViewTextBoxColumn Column5;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column4;
+        private System.Windows.Forms.DataGridViewTextBoxColumn Column6;
     }
 }

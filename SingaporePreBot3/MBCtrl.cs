@@ -17,6 +17,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Documents;
 using System.Windows.Forms;
+using System.Windows.Shapes;
 using WebSocketSharp;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.StartPanel;
 
@@ -28,6 +29,7 @@ namespace SingaporePreBot3
         private HttpClient httpClient = null;
         public bool isWorking = false;
         Thread mainThread = null;
+        Thread marketThread = null;
         Thread balanceThread = null;
         int loginStatus;
         long counter = Utils.getTick();
@@ -39,6 +41,7 @@ namespace SingaporePreBot3
         string username;
         long tick = 0;
         private string lid = "";
+        private string strPreMatchUrl = "";
 
         WebSocket webSocket = null;
         int socketStatus = 0;
@@ -64,6 +67,8 @@ namespace SingaporePreBot3
                     Global.WriteStatus("[Superodd] Program Started.");
                     mainThread = new Thread(() => run());
                     mainThread.Start();
+                    marketThread = new Thread(() => getOldNewMarkets());
+                    marketThread.Start();
                     balanceThread = new Thread(checkLogin);
                     balanceThread.Start();
                 }
@@ -117,7 +122,7 @@ namespace SingaporePreBot3
                 string strTodayPattern = @"ajaxToday[^']*'(?<val>[^']*)";
 
                 //string strLiveUrl = $"https://{Setting.Instance.domainSuperodd}/_View/" + Regex.Match(strOddContent, strRunPattern).Groups["val"].Value;
-                string strPreMatchUrl = $"https://{Setting.Instance.domainSuperodd}/_View/" + Regex.Match(strOddContent, strTodayPattern).Groups["val"].Value;
+                strPreMatchUrl = $"https://{Setting.Instance.domainSuperodd}/_View/" + Regex.Match(strOddContent, strTodayPattern).Groups["val"].Value;
 
                 if (tick == 0)
                     tick = Utils.getTick();
@@ -129,15 +134,61 @@ namespace SingaporePreBot3
                 string strLiveContent = preMatchMessage.Content.ReadAsStringAsync().Result;
 
                 List<MatchItem> matchItems = GetMatchItems(strLiveContent);
+                if (RelationCtrl.Instance.getMatches("MB").Count == 0)
+                {
+                    RelationCtrl.Instance.setMatches("MB", matchItems);
+                }
+                else
+                {
+                    RelationCtrl.Instance.UpdateMatches("MB", matchItems);
+                }
 
-                RelationCtrl.Instance.setMatches("MB", matchItems);
                 Global.UpdateSuperodd();
-                RelationCtrl.Instance.checkSiteCandidate("MB");
+                //RelationCtrl.Instance.checkSiteCandidate("MB");
             }
             catch (Exception e)
             {
                 Trace.WriteLine("Try GetLiveEvents Invalid!");
             }
+        }
+
+        private void getOldNewMarkets()
+        {
+            int startTime = 40;
+            int endTime = 10;
+            int deltaTime = 2;
+            while (isWorking)
+            {
+                foreach (var match in RelationCtrl.Instance.getMatches("MB"))
+                {
+                    var now = DateTime.UtcNow.AddHours(8);
+
+                    // 예시: startTime - 150분 전 oldMarkets 채우기
+                    if (now >= match.startTime.AddMinutes(-startTime) && now <= match.startTime.AddMinutes(-startTime + deltaTime) && match.oldMarkets.Count == 0)
+                    {
+                        match.oldMarkets = FetchMarkets(match.matchId);
+                    }
+
+                    // 예시: startTime - 30분 전 newMarkets 채우기
+                    if (now >= match.startTime.AddMinutes(-endTime) && now <= match.startTime.AddMinutes(-endTime + deltaTime) && match.newMarkets.Count == 0)
+                    {
+                        match.newMarkets = FetchMarkets(match.matchId);
+                    }
+                }
+                Global.UpdateSuperodd();
+                Thread.Sleep(10000); // 10초 주기
+            }
+
+        }
+        private List<Market> FetchMarkets(string matchId)
+        {
+            // 서버 요청 → Market 리스트 변환
+            HttpResponseMessage preMatchMessage = httpClient.GetAsync(strPreMatchUrl).Result;
+            string strLiveContent = preMatchMessage.Content.ReadAsStringAsync().Result;
+            List<MatchItem> matchItems = GetMatchItems(strLiveContent);
+            MatchItem match = matchItems.Find(m => m.matchId == matchId);
+            List<Market> marketList = match.markets;
+            return marketList;
         }
         public MatchItem GetMatchItem(dynamic game, string leagueId, string leagueName, bool isOne)
         {
@@ -484,6 +535,11 @@ namespace SingaporePreBot3
                 {
                     Global.WriteStatus("[Superodd] Program Stopped.");
                     mainThread.Abort();
+                }
+                if (marketThread != null)
+                {
+                    Global.WriteStatus("[Superodd] Upgrade Market Stopped.");
+                    marketThread.Abort();
                 }
                 closeSocket();
                 if (balanceThread != null)
