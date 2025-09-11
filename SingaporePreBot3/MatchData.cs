@@ -37,7 +37,11 @@ namespace SingaporePreBot3
         public bool isRest;
         public int period;
         public DateTime updateTime;
-        public List<Market> markets = new List<Market>();
+        public List<Market> markets = new List<Market>();       // current Markets
+
+        public List<Market> oldMarkets = new List<Market>();    // old Markets for checking update - start Time
+        public List<Market> newMarkets = new List<Market>();    // new Markets for checking update - end Time
+
         //public List<OverUnderMarket> listOUs = new List<OverUnderMarket>();
         public MatchItem()
         {
