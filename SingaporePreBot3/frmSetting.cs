@@ -28,6 +28,8 @@ namespace SingaporePreBot3
             txtDomainPinnacle.Text = Setting.Instance.domainSuperodd;
             txtUsernamePinnacle.Text = Setting.Instance.usernameSuperodd;
             txtPasswordPinnacle.Text = Setting.Instance.passwordSuperodd;
+            numStartTime.Text = Setting.Instance.startTime.ToString();
+            numEndTime.Text = Setting.Instance.endTime.ToString();
             numDafabet.Value = (decimal)Setting.Instance.singaporeTime;
             numPinnacle.Value = (decimal)Setting.Instance.superoddTime;
             numCandidate.Value = (decimal)Setting.Instance.candidateTime;
@@ -44,6 +46,8 @@ namespace SingaporePreBot3
             Setting.Instance.domainSuperodd = txtDomainPinnacle.Text;
             Setting.Instance.usernameSuperodd = txtUsernamePinnacle.Text;
             Setting.Instance.passwordSuperodd = txtPasswordPinnacle.Text;
+            Setting.Instance.startTime = (int)numStartTime.Value;
+            Setting.Instance.endTime = (int)numEndTime.Value;
             Setting.Instance.singaporeTime = (int)numDafabet.Value;
             Setting.Instance.superoddTime = (int)numPinnacle.Value;
             Setting.Instance.candidateTime = (int)numCandidate.Value;

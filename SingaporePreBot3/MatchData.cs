@@ -24,6 +24,7 @@ namespace SingaporePreBot3
     {
         public string id;
         public bool isOne;              // true - 1X2 add, false - only AH markets
+        public bool isChecked = false;  //is compared or not
         public string leagueId;
         public string matchId;
         public DateTime startTime;

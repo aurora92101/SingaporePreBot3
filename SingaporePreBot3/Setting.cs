@@ -37,6 +37,8 @@ namespace SingaporePreBot3
         public string domainSuperodd { get; set; }
         public string usernameSuperodd { get; set; }
         public string passwordSuperodd { get; set; }
+        public int startTime { get; set; }
+        public int endTime { get; set; }
         public double balanceSuperodd { get; set; }
         public int singaporeTime { get; set; }
         public int superoddTime { get; set; }
@@ -61,6 +63,8 @@ namespace SingaporePreBot3
         public List<string> blackLeagues = new List<string>();
         public bool playSound { get; set; }
         public bool isLicense;
+
+        public List<string> compareResult = new List<string>();
         public string ReadRegistry(string KeyName)
         {
             return Registry.CurrentUser.CreateSubKey("SoftWare").CreateSubKey(programName).GetValue(KeyName, (object)"").ToString();
@@ -78,6 +82,8 @@ namespace SingaporePreBot3
             domainSuperodd = ReadRegistry("domainSuperodd");
             usernameSuperodd = ReadRegistry("usernameSuperodd");
             passwordSuperodd = ReadRegistry("passwordSuperodd");
+            startTime = Utils.ParseToInt(ReadRegistry("startTime"));
+            endTime = Utils.ParseToInt(ReadRegistry("endTime"));
             string strStake = ReadRegistry("stakeList");
             if (!string.IsNullOrEmpty(strStake))
                 stakeList = JsonConvert.DeserializeObject<List<StakeItem>>(strStake);
@@ -104,6 +110,8 @@ namespace SingaporePreBot3
             WriteRegistry("domainSuperodd", domainSuperodd);
             WriteRegistry("usernameSuperodd", usernameSuperodd);
             WriteRegistry("passwordSuperodd", passwordSuperodd);
+            WriteRegistry("startTime", startTime.ToString());
+            WriteRegistry("endTime", endTime.ToString());
             WriteRegistry("stakeList", JsonConvert.SerializeObject(stakeList));
             WriteRegistry("singaporeTime", singaporeTime.ToString());
             WriteRegistry("superoddTime", superoddTime.ToString());

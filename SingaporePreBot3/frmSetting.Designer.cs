@@ -451,7 +451,7 @@ namespace SingaporePreBot3
             // 
             this.numStartTime.Location = new System.Drawing.Point(714, 233);
             this.numStartTime.Maximum = new decimal(new int[] {
-            10,
+            10000,
             0,
             0,
             0});
@@ -496,7 +496,7 @@ namespace SingaporePreBot3
             // 
             this.numEndTime.Location = new System.Drawing.Point(1021, 235);
             this.numEndTime.Maximum = new decimal(new int[] {
-            10,
+            10000,
             0,
             0,
             0});

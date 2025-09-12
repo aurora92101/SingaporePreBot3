@@ -124,14 +124,14 @@ namespace SingaporePreBot3
             // Column5
             // 
             this.Column5.FillWeight = 70F;
-            this.Column5.HeaderText = "Odds";
+            this.Column5.HeaderText = "CurrentOdd";
             this.Column5.Name = "Column5";
             this.Column5.ReadOnly = true;
             this.Column5.Width = 250;
             // 
             // Column4
             // 
-            this.Column4.HeaderText = "OldOdd";
+            this.Column4.HeaderText = "StartOdd";
             this.Column4.Name = "Column4";
             this.Column4.ReadOnly = true;
             this.Column4.Width = 250;
@@ -139,7 +139,7 @@ namespace SingaporePreBot3
             // Column6
             // 
             this.Column6.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.Column6.HeaderText = "NewOdd";
+            this.Column6.HeaderText = "EndOdd";
             this.Column6.Name = "Column6";
             this.Column6.ReadOnly = true;
             // 

@@ -160,6 +160,7 @@ namespace SingaporePreBot3
             this.btnHistory.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnHistory.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnHistory.UseVisualStyleBackColor = false;
+            this.btnHistory.Visible = false;
             this.btnHistory.Click += new System.EventHandler(this.button_Click);
             // 
             // btnArb
@@ -184,6 +185,7 @@ namespace SingaporePreBot3
             this.btnArb.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.btnArb.TextImageRelation = System.Windows.Forms.TextImageRelation.ImageBeforeText;
             this.btnArb.UseVisualStyleBackColor = false;
+            this.btnArb.Visible = false;
             this.btnArb.Click += new System.EventHandler(this.button_Click);
             // 
             // btnSuperodd

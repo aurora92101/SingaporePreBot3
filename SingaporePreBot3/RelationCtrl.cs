@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting.Contexts;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Web.UI.WebControls;
@@ -382,6 +383,76 @@ namespace SingaporePreBot3
             {
                 Trace.WriteLine($"udpateMatch erorr - {ex.Message}");
             }
+        }
+
+        public void doCompare(string site)
+        {
+            List<MatchItem> matches = getMatches(site);
+            foreach (MatchItem one in matches)
+            {
+                if ((one.oldMarkets.Count != 0) && (one.newMarkets.Count != 0))
+                {
+                    Setting.Instance.compareResult.AddRange(FindOneLevelMoves(one.oldMarkets, one.newMarkets, one.isOne));
+                }
+            }
+        }
+        public static List<string> FindOneLevelMoves(List<Market> oldMarkets, List<Market> newMarkets, bool isOne, double oddTolerance = 0.05)
+        {
+            var results = new List<string>();
+
+            // 특수 케이스: 마켓이 2개뿐인 경우
+            if (isOne)
+            {
+                var oldAH = oldMarkets.FirstOrDefault(m => m.nType == 1);  // 예: AH
+                var old1X2 = oldMarkets.FirstOrDefault(m => m.nType == 2); // 예: 1X2
+
+                var newAH = newMarkets.FirstOrDefault(m => m.nType == 1);
+                var new1X2 = newMarkets.FirstOrDefault(m => m.nType == 2);
+
+                if (oldAH != null && old1X2 != null && newAH != null && new1X2 != null)
+                {
+                    // odd 비교
+                    bool odd1Close = Math.Abs(new1X2.dOdd1 - oldAH.dOdd1) <= oddTolerance;
+                    bool odd2Close = Math.Abs(new1X2.dOdd2 - oldAH.dOdd2) <= oddTolerance;
+
+                    if (odd1Close && odd2Close)
+                        results.Add($"[Both] Old FT-AH {oldAH.strLine} @ ({oldAH.dOdd1},{oldAH.dOdd2}) -> New FT-1X2 {new1X2.strLine} @ ({new1X2.dOdd1},{new1X2.dOdd2})");
+                    else if (odd1Close)
+                        results.Add($"[Odd1] Old FT-AH {oldAH.strLine} @ {oldAH.dOdd1} -> New FT-1X2 {new1X2.strLine} @ {new1X2.dOdd1}");
+                    else if (odd2Close)
+                        results.Add($"[Odd2] Old FT-AH {oldAH.strLine} @ {oldAH.dOdd2} -> New FT-1X2 {new1X2.strLine} @ {new1X2.dOdd2}");
+
+                    return results;
+                }
+            }
+
+            // 일반 케이스: 핸디캡 ±0.25 비교
+            foreach (var newM in newMarkets)
+            {
+                if (!double.TryParse(newM.strLine, out double newHandicap))
+                    continue;
+
+                foreach (var oldM in oldMarkets)
+                {
+                    if (!double.TryParse(oldM.strLine, out double oldHandicap))
+                        continue;
+
+                    if (Math.Abs(newHandicap - oldHandicap) == 0.25)
+                    {
+                        bool odd1Close = Math.Abs(newM.dOdd1 - oldM.dOdd1) <= oddTolerance;
+                        bool odd2Close = Math.Abs(newM.dOdd2 - oldM.dOdd2) <= oddTolerance;
+
+                        if (odd1Close && odd2Close)
+                            results.Add($"[Both] Old {oldM.strLine} @ ({oldM.dOdd1},{oldM.dOdd2}) -> New {newM.strLine} @ ({newM.dOdd1},{newM.dOdd2})");
+                        else if (odd1Close)
+                            results.Add($"[Odd1] Old {oldM.strLine} @ {oldM.dOdd1} -> New {newM.strLine} @ {newM.dOdd1}");
+                        else if (odd2Close)
+                            results.Add($"[Odd2] Old {oldM.strLine} @ {oldM.dOdd2} -> New {newM.strLine} @ {newM.dOdd2}");
+                    }
+                }
+            }
+
+            return results;
         }
         public void updateMarket(string site, Market item)
         {

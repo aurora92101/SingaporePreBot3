@@ -154,8 +154,8 @@ namespace SingaporePreBot3
 
         private void getOldNewMarkets()
         {
-            int startTime = 40;
-            int endTime = 10;
+            int startTime = Setting.Instance.startTime;
+            int endTime = Setting.Instance.endTime;
             int deltaTime = 2;
             while (isWorking)
             {
@@ -175,10 +175,13 @@ namespace SingaporePreBot3
                         match.newMarkets = FetchMarkets(match.matchId);
                     }
                 }
+                RelationCtrl.Instance.doCompare("MB");
+                if (Setting.Instance.compareResult.Count > 0)
+                    Global.WriteStatus(string.Join(Environment.NewLine, Setting.Instance.compareResult));
+
                 Global.UpdateSuperodd();
                 Thread.Sleep(10000); // 10초 주기
             }
-
         }
         private List<Market> FetchMarkets(string matchId)
         {
